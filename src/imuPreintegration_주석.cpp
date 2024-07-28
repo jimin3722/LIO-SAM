@@ -278,7 +278,7 @@ public:
 
     int key = 1;
 
-    // IMU-LiDAR pose 변환
+    // IMU-LiDAR 좌표계 변환
     gtsam::Pose3 imu2Lidar = gtsam::Pose3(gtsam::Rot3(1, 0, 0, 0), gtsam::Point3(-extTrans.x(), -extTrans.y(), -extTrans.z()));
     gtsam::Pose3 lidar2Imu = gtsam::Pose3(gtsam::Rot3(1, 0, 0, 0), gtsam::Point3(extTrans.x(), extTrans.y(), extTrans.z()));
     
@@ -434,6 +434,7 @@ public:
             graphValues.insert(X(0), prevPose_);
             graphValues.insert(V(0), prevVel_);
             graphValues.insert(B(0), prevBias_);
+            
             // optimize once - 최적화 한번 수행
             optimizer.update(graphFactors, graphValues);
             graphFactors.resize(0);

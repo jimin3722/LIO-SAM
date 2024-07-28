@@ -311,6 +311,7 @@ public:
         usleep(100);
     }
 
+    // imu프레임 imu 데이터들을 lidar-imu extrinsic param 으로 lidar프레임 imu 데이터로 바꿈
     sensor_msgs::msg::Imu imuConverter(const sensor_msgs::msg::Imu& imu_in)
     {
         sensor_msgs::msg::Imu imu_out = imu_in;
@@ -344,7 +345,7 @@ public:
     }
 };
 
-
+// thisPub 객체로 포인트, 타임 스탬프, 프레임으로 pub
 sensor_msgs::msg::PointCloud2 publishCloud(rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr thisPub, pcl::PointCloud<PointType>::Ptr thisCloud, rclcpp::Time thisStamp, std::string thisFrame)
 {
     sensor_msgs::msg::PointCloud2 tempCloud;
@@ -356,13 +357,14 @@ sensor_msgs::msg::PointCloud2 publishCloud(rclcpp::Publisher<sensor_msgs::msg::P
     return tempCloud;
 }
 
+// 타임스탬프 > double형 시간으로
 template<typename T>
 double stamp2Sec(const T& stamp)
 {
     return rclcpp::Time(stamp).seconds();
 }
 
-
+// imu 데이터의 Angular vel값을 > angular_x, angular_y, angular_z
 template<typename T>
 void imuAngular2rosAngular(sensor_msgs::msg::Imu *thisImuMsg, T *angular_x, T *angular_y, T *angular_z)
 {
@@ -371,7 +373,7 @@ void imuAngular2rosAngular(sensor_msgs::msg::Imu *thisImuMsg, T *angular_x, T *a
     *angular_z = thisImuMsg->angular_velocity.z;
 }
 
-
+// imu 데이터의 Linear acc값을 > acc_x, acc_y, acc_z
 template<typename T>
 void imuAccel2rosAccel(sensor_msgs::msg::Imu *thisImuMsg, T *acc_x, T *acc_y, T *acc_z)
 {
@@ -380,7 +382,7 @@ void imuAccel2rosAccel(sensor_msgs::msg::Imu *thisImuMsg, T *acc_x, T *acc_y, T 
     *acc_z = thisImuMsg->linear_acceleration.z;
 }
 
-
+// imu 데이터의 orientation quaternion 을 rpy로
 template<typename T>
 void imuRPY2rosRPY(sensor_msgs::msg::Imu *thisImuMsg, T *rosRoll, T *rosPitch, T *rosYaw)
 {
@@ -394,13 +396,13 @@ void imuRPY2rosRPY(sensor_msgs::msg::Imu *thisImuMsg, T *rosRoll, T *rosPitch, T
     *rosYaw = imuYaw;
 }
 
-
+// 원점에서 해당포인트까지 거리
 float pointDistance(PointType p)
 {
     return sqrt(p.x*p.x + p.y*p.y + p.z*p.z);
 }
 
-
+// 두 포인트끼리 거리
 float pointDistance(PointType p1, PointType p2)
 {
     return sqrt((p1.x-p2.x)*(p1.x-p2.x) + (p1.y-p2.y)*(p1.y-p2.y) + (p1.z-p2.z)*(p1.z-p2.z));

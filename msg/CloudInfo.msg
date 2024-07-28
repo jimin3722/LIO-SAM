@@ -10,7 +10,8 @@ float32[] point_range # point range
 int64 imu_available
 int64 odom_available
 
-# Attitude for LOAM initialization
+# Attitude for LOAM 
+# 라이다 해당 프레임의 imu roll,pitch,yaw
 float32 imu_roll_init
 float32 imu_pitch_init
 float32 imu_yaw_init

@@ -461,7 +461,7 @@ public:
     {
         cloudInfo.imu_available = false;
 
-        // 현재 프레임 시작 시간 이전의 IMU 데이터를 큐에서 제거
+        // 현재 프레임 시작 시간 - 0.1 이전의 IMU 데이터를 큐에서 제거
         while (!imuQueue.empty())
         {
             if (stamp2Sec(imuQueue.front().header.stamp) < timeScanCur - 0.01)
